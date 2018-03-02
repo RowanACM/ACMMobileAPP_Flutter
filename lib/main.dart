@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:practice/ACMAnnouncements.dart';
 import 'package:practice/ACMAnnouncementViewer.dart';
+import 'package:practice/ACMHome.dart';
 import 'package:practice/GetIp.dart';
 import 'package:practice/RandomWords.dart';
 
@@ -47,6 +48,9 @@ class TabbedAppBarSample extends StatelessWidget {
     if('ACM Announcements' == item){
       return new ACMAnnouncements();
     }
+    if('ACM Home' == item){
+      return new ACMHome();
+    }
     return new GetIp();
 
   }
@@ -64,6 +68,8 @@ const List<Choice> choices = const <Choice>[
   const Choice(title: 'Words', icon: Icons.favorite ),
   const Choice(title: 'IP Address', icon: Icons.web),
   const Choice(title: 'ACM Announcements', icon: Icons.view_list),
+  const Choice(title: 'ACM Home', icon: Icons.home),
+
 
 ];
 
