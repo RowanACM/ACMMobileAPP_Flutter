@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,22 +20,15 @@ GoogleSignIn _googleSignIn = new GoogleSignIn(
 );
 
 class ACMHomeState extends State<ACMHome> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  GoogleSignInAccount _currentUser;
-  String _contactText;
-
+ // GoogleSignInAccount _currentUser;
+  var _currentUser;
+  String _loginMessage;
   @override
   void initState() {
     super.initState();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      setState(() {
-        _currentUser = account;
-      });
-      if (_currentUser != null) {
-        _handleGetContact();
-      }
-    });
-    _googleSignIn.signInSilently();
+    _handleSignInSilently();
   }
 
   @override
@@ -55,10 +51,18 @@ class ACMHomeState extends State<ACMHome> {
 
       ),
       new Padding(padding: new EdgeInsets.only(top: 20.0),
-          child:
-          new MaterialButton(onPressed: _handleSignIn,
+          child: (_loginMessage != null)?
+          new Text(_loginMessage,
+                style: new TextStyle(
+                fontFamily: "Rock Salt",
+                fontSize: 17.0,
+                color: Colors.green,
+                )) :
+          new MaterialButton(onPressed: ()=> _handleSignIn()
+              .then((FirebaseUser user) => print(user))
+              .catchError((e) => print(e)),
             color: Colors.blue, child:
-            new Text('Meeting Sign-in',
+            new Text(_currentUser == null ? 'Google Sign-in' : 'Meeting Sign-in',
                 style: new TextStyle(
                   fontFamily: "Rock Salt",
                   fontSize: 17.0,
@@ -75,7 +79,7 @@ class ACMHomeState extends State<ACMHome> {
             fontSize: 17.0,
           )
       )
-      )
+      ),
     ],
 
     );
@@ -83,38 +87,61 @@ class ACMHomeState extends State<ACMHome> {
 
 
   //google sign in stuff
-
-  Future<Null> _handleGetContact() async {
-    setState(() {
-      _contactText = "Loading contact info...";
-    });
-    final http.Response response = await http.get(
-      'https://people.googleapis.com/v1/people/me/connections'
-          '?requestMask.includeField=person.names',
-      headers: await _currentUser.authHeaders,
+  Future<FirebaseUser> _handleSignIn() async {
+      return _signIn( await _googleSignIn.signIn());
+  }
+  Future<FirebaseUser> _handleSignInSilently() async {
+    return _signIn( await _googleSignIn.signInSilently());
+  }
+  Future<FirebaseUser> _signIn(GoogleSignInAccount googleUser) async {
+    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    FirebaseUser user = await _auth.signInWithGoogle(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
-    if (response.statusCode != 200) {
-      setState(() {
-        _contactText = "People API gave a ${response.statusCode} "
-            "response. Check logs for details.";
+    setState((){
+      _currentUser = user;
+    });
+      user.getIdToken(refresh:true).then((String idToken){
+          _meetingSignIn(idToken);
       });
-      print('People API ${response.statusCode} response: ${response.body}');
-      return;
-    }
+    return user;
   }
 
-  Future<Null> _handleSignIn() async {
-    print('sign in pressed');
-    try {
-      await _googleSignIn.signIn();
-      print('singed in');
-    } catch (error) {
-      print(error);
-    }
-  }
+
 
   Future<Null> _handleSignOut() async {
     _googleSignIn.disconnect();
   }
 
+
+  //meeting sign in stuff
+  Future<String> _meetingSignIn(String token)async {
+
+    print(token);
+   String  url = 'https://api.rowanacm.org/prod/sign-in?token='+token;
+    String result;
+    var httpClient = new HttpClient();
+    try {
+      var request = await httpClient.getUrl(Uri.parse(url));
+      var response = await request.close();
+      if (response.statusCode == HttpStatus.OK) {
+        var json = await response.transform(UTF8.decoder).join();
+        var data = JSON.decode(json);
+        result = data['message'];
+      } else {
+        result =
+        'Error Meeting Login:\nHttp status ${response.statusCode}';
+      }
+    } catch (exception) {
+      result = 'Failed Meeting Login';
+    }
+    print(result);
+    setState(() {
+      _loginMessage = result;
+    });
+
+
+   return result;
+  }
 }
