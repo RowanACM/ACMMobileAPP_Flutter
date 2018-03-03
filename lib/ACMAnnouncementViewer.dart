@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:practice/ACMAnnouncements.dart';
+import 'package:practice/Utils.dart';
 
 class ACMAnnouncementViewer extends StatefulWidget {
   ACMAnnouncementViewer(this.announcement);
@@ -29,7 +30,7 @@ class ACMAnnouncementViewerState extends State<ACMAnnouncementViewer> {
           new Text(announcement.committee),
         ]),
       ),
-      body: new Padding(padding: new EdgeInsets.all(20.0), child:
+      body: makeScrollable(new Padding(padding: new EdgeInsets.all(20.0), child:
           new Column( children: <Widget>[
               new Center(child: new Text(
                       announcement.title,
@@ -57,6 +58,7 @@ class ACMAnnouncementViewerState extends State<ACMAnnouncementViewer> {
               )
             ])
           )
+      )
       );
     return main;
   }

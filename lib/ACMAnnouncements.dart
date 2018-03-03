@@ -11,7 +11,6 @@ import 'package:practice/SessionData.dart';
 
 
 class ACMAnnouncements extends StatefulWidget {
-
   @override
   createState()  => new ACMAnnouncementsState();
 }

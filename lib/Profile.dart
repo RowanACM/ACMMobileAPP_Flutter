@@ -14,18 +14,10 @@ class Profile extends StatefulWidget {
   createState() => new ProfileState();
 }
 
-GoogleSignIn _googleSignIn = new GoogleSignIn(
-  scopes: <String>[
-    'email',
-  ],
-);
-
 class ProfileState extends State<Profile> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
  // GoogleSignInAccount _currentUser;
-  var _currentUser;
-  var _profileJson;
+  var _profileJson = profileInfoCache;
   @override
   void initState() {
     super.initState();
@@ -44,8 +36,6 @@ class ProfileState extends State<Profile> {
         alignment: Alignment.topCenter,
         foregroundDecoration: new BoxDecoration(
           image: new DecorationImage(
-            fit: BoxFit.fill,
-
             image:  new NetworkImage(_profileJson['profile_picture']),
           ),
         ),
@@ -67,6 +57,23 @@ class ProfileState extends State<Profile> {
           )
       )
       ),
+      new Padding(padding: new EdgeInsets.all(10.0), child:
+      new Text('Meetings attened: ${_profileJson['meeting_count']}',
+          style: new TextStyle(
+            fontFamily: "Rock Salt",
+            fontSize: 17.0,
+          )
+      )
+      ),
+      new Padding(padding: new EdgeInsets.all(20.0), child:
+      new Text('Todo list: \n \t ${_profileJson['todo_list']}',
+          style: new TextStyle(
+            fontFamily: "Rock Salt",
+            fontSize: 17.0,
+          )
+      )
+      ),
+
     ],
 
     ): new Text('please log in to view profile.');
@@ -76,14 +83,14 @@ class ProfileState extends State<Profile> {
 
   //meeting sign in stuff
    _getProfileInfo()async {
+    if(_profileJson == null){
      String result;
 
      if (fireUser != null) {
        fireUser.getIdToken(refresh: true).then((String idToken) async {
          String url = 'https://api.rowanacm.org/prod/get-user-info?token=' +
-             token;
+             idToken;
 
-         print(url);
          var httpClient = new HttpClient();
          try {
            var request = await httpClient.getUrl(Uri.parse(url));
@@ -92,21 +99,25 @@ class ProfileState extends State<Profile> {
              var json = await response.transform(UTF8.decoder).join();
              var data = JSON.decode(json);
              result = data;
+             profileInfoCache = result;
+             if (mounted) {
+               setState(() {
+                 _profileJson = result;
+               });
+             }
            } else {
              result =
              'Error Meeting Login:\nHttp status ${response.statusCode}';
            }
          } catch (exception) {
-           result = 'Failed Meeting Login';
+           result = 'Failed getting profile';
          }
          print(result);
-//      setState(() {
-//        _profileJson = result;
-//      });
 
 
          return result;
        });
+     }
      }
    }
 }

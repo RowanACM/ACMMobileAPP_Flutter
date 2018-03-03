@@ -10,6 +10,8 @@ import 'package:practice/Committees.dart';
 import 'package:practice/GetIp.dart';
 import 'package:practice/Profile.dart';
 import 'package:practice/RandomWords.dart';
+import 'package:practice/Utils.dart';
+
 
 class TabbedAppBarSample extends StatelessWidget {
   @override
@@ -33,8 +35,8 @@ class TabbedAppBarSample extends StatelessWidget {
           ),
           body: new TabBarView(
             children: choices.map((Choice choice) {
-              return
-                chosenActivity(choice.title);
+              return  chosenActivity(choice.title);
+
             }).toList(),
           ),
         ),
@@ -43,7 +45,7 @@ class TabbedAppBarSample extends StatelessWidget {
     );
   }
 
-  StatefulWidget chosenActivity(item){
+  Widget chosenActivity(item){
     if(item == 'Words'){
       return new RandomWords();
     }
@@ -51,10 +53,10 @@ class TabbedAppBarSample extends StatelessWidget {
       return new ACMAnnouncements();
     }
     if('ACM Home' == item){
-      return new ACMHome();
+      return  makeScrollable(new ACMHome());
     }
     if('Profile' == item){
-      return new Profile();
+      return makeScrollable(new Profile());
     }
     if('Committes' == item){
       return new Committes();
@@ -63,6 +65,7 @@ class TabbedAppBarSample extends StatelessWidget {
 
   }
 }
+
 
 
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:practice/ACMAnnouncements.dart';
 import 'package:practice/Committees.dart';
+import 'package:practice/Utils.dart';
 
 class CommitteeViewer extends StatefulWidget {
   CommitteeViewer(this.committee);
@@ -27,7 +28,7 @@ class CommitteeViewerState extends State<CommitteeViewer> {
           new Text(committee.name),
         ]),
       ),
-      body: new Padding(padding: new EdgeInsets.all(25.0),
+      body: makeScrollable(new Padding(padding: new EdgeInsets.all(25.0),
                   child: new Text(committee.description,
                           textAlign: TextAlign.justify,
                           style: new TextStyle(
@@ -38,7 +39,7 @@ class CommitteeViewerState extends State<CommitteeViewer> {
               )
 
 
-      );
+      ));
     return main;
   }
 
