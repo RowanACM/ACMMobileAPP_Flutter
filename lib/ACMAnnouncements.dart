@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:practice/ACMAnnouncementViewer.dart';
+import 'package:practice/SessionData.dart';
 
 
 
@@ -16,7 +17,7 @@ class ACMAnnouncements extends StatefulWidget {
 }
 
 class ACMAnnouncementsState extends State<ACMAnnouncements> {
-  var _announcements = <Announcement>[];
+  var _announcements = (announcementsCache != null)? announcementsCache : <Announcement>[];
   @override
   Widget build(BuildContext context) {
     getAnnouncements();
@@ -63,9 +64,12 @@ class ACMAnnouncementsState extends State<ACMAnnouncements> {
 
         result = 'Failed getting  announcements';
       }
-      setState(() {
-        _announcements = announcements;
-      });
+      announcementsCache = announcements;
+      if(mounted) {
+        setState(() {
+          _announcements = announcements;
+        });
+      }
     }
   }
 

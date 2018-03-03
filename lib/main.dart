@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:practice/ACMAnnouncements.dart';
 import 'package:practice/ACMAnnouncementViewer.dart';
 import 'package:practice/ACMHome.dart';
+import 'package:practice/Committees.dart';
 import 'package:practice/GetIp.dart';
+import 'package:practice/Profile.dart';
 import 'package:practice/RandomWords.dart';
 
 class TabbedAppBarSample extends StatelessWidget {
@@ -18,7 +20,7 @@ class TabbedAppBarSample extends StatelessWidget {
         length: choices.length,
         child: new Scaffold(
           appBar: new AppBar(
-            title: const Text('John\'s Sample'),
+            title: const Text('ACM'),
             bottom: new TabBar(
               isScrollable: true,
               tabs: choices.map((Choice choice) {
@@ -51,6 +53,12 @@ class TabbedAppBarSample extends StatelessWidget {
     if('ACM Home' == item){
       return new ACMHome();
     }
+    if('Profile' == item){
+      return new Profile();
+    }
+    if('Committes' == item){
+      return new Committes();
+    }
     return new GetIp();
 
   }
@@ -65,12 +73,12 @@ class Choice {
 }
 
 const List<Choice> choices = const <Choice>[
+  const Choice(title: 'ACM Home', icon: Icons.home),
+  const Choice(title: 'ACM Announcements', icon: Icons.announcement),
+  const Choice(title: 'Committes', icon: Icons.view_list),
+  const Choice(title: 'Profile', icon: Icons.account_circle),
   const Choice(title: 'Words', icon: Icons.favorite ),
   const Choice(title: 'IP Address', icon: Icons.web),
-  const Choice(title: 'ACM Announcements', icon: Icons.view_list),
-  const Choice(title: 'ACM Home', icon: Icons.home),
-
-
 ];
 
 

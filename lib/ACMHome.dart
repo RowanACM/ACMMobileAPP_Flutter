@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import "package:http/http.dart" as http;
+import 'package:practice/SessionData.dart';
 
 class ACMHome extends StatefulWidget {
   @override
@@ -20,15 +21,17 @@ GoogleSignIn _googleSignIn = new GoogleSignIn(
 );
 
 class ACMHomeState extends State<ACMHome> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+   FirebaseAuth _auth = FirebaseAuth.instance;
 
  // GoogleSignInAccount _currentUser;
-  var _currentUser;
-  String _loginMessage;
+  var _currentUser = fireUser;
+  String _loginMessage = meetingLoginMessageCache;
   @override
   void initState() {
     super.initState();
-    _handleSignInSilently();
+    if(_currentUser == null) {
+      _handleSignInSilently();
+    }
   }
 
   @override
@@ -58,9 +61,7 @@ class ACMHomeState extends State<ACMHome> {
                 fontSize: 17.0,
                 color: Colors.green,
                 )) :
-          new MaterialButton(onPressed: ()=> _handleSignIn()
-              .then((FirebaseUser user) => print(user))
-              .catchError((e) => print(e)),
+          new MaterialButton(onPressed: _handleSignIn,
             color: Colors.blue, child:
             new Text(_currentUser == null ? 'Google Sign-in' : 'Meeting Sign-in',
                 style: new TextStyle(
@@ -87,11 +88,15 @@ class ACMHomeState extends State<ACMHome> {
 
 
   //google sign in stuff
-  Future<FirebaseUser> _handleSignIn() async {
-      return _signIn( await _googleSignIn.signIn());
+  void _handleSignIn() async {
+      if(_currentUser ==null) {
+        _signIn(await _googleSignIn.signIn());
+      }else{
+        _handleMeetingSignIn(_currentUser);
+      }
   }
-  Future<FirebaseUser> _handleSignInSilently() async {
-    return _signIn( await _googleSignIn.signInSilently());
+  void _handleSignInSilently() async {
+     _signIn( await _googleSignIn.signInSilently());
   }
   Future<FirebaseUser> _signIn(GoogleSignInAccount googleUser) async {
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -99,15 +104,22 @@ class ACMHomeState extends State<ACMHome> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    _handleMeetingSignIn(user);
     setState((){
       _currentUser = user;
     });
-      user.getIdToken(refresh:true).then((String idToken){
-          _meetingSignIn(idToken);
-      });
+
     return user;
   }
 
+  void _handleMeetingSignIn(var user){
+    user.getIdToken(refresh:true).then((String idToken){
+      _meetingSignIn(idToken);
+      fireUser = user;
+      token = idToken;
+
+    });
+  }
 
 
   Future<Null> _handleSignOut() async {
@@ -134,12 +146,15 @@ class ACMHomeState extends State<ACMHome> {
         'Error Meeting Login:\nHttp status ${response.statusCode}';
       }
     } catch (exception) {
-      result = 'Failed Meeting Login';
+      result = 'Failed profile get';
     }
     print(result);
-    setState(() {
-      _loginMessage = result;
-    });
+    meetingLoginMessageCache = result;
+    if(mounted) {
+      setState(() {
+        _loginMessage = result;
+      });
+    }
 
 
    return result;
