@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import "package:http/http.dart" as http;
 import 'package:practice/SessionData.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ACMHome extends StatefulWidget {
   @override
@@ -47,8 +48,7 @@ class ACMHomeState extends State<ACMHome> {
         foregroundDecoration: new BoxDecoration(
           image: new DecorationImage(
             fit: BoxFit.fill,
-            image: new NetworkImage(
-                'https://rowanacm.org/img/bannerBackgroundSmall.jpg'),
+            image: new CachedNetworkImageProvider( 'https://rowanacm.org/img/bannerBackgroundSmall.jpg'),
           ),
         ),
 

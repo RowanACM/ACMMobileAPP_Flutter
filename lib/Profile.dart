@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -36,7 +37,7 @@ class ProfileState extends State<Profile> {
         alignment: Alignment.topCenter,
         foregroundDecoration: new BoxDecoration(
           image: new DecorationImage(
-            image:  new NetworkImage(_profileJson['profile_picture']),
+            image:  new  CachedNetworkImageProvider(_profileJson['profile_picture']),
           ),
         ),
 

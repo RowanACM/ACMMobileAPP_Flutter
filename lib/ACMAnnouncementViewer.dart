@@ -26,7 +26,7 @@ class ACMAnnouncementViewerState extends State<ACMAnnouncementViewer> {
       appBar: new AppBar(
         title: new Row(children: <Widget>[
           new Padding(padding: new EdgeInsets.all(10.0), child:
-              new Image.network(announcement.iconUrl)),
+      getCachedNetworkImage(announcement.iconUrl)),
           new Text(announcement.committee),
         ]),
       ),

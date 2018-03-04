@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:practice/ACMAnnouncementViewer.dart';
 import 'package:practice/SessionData.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 
@@ -76,7 +77,10 @@ class ACMAnnouncementsState extends State<ACMAnnouncements> {
 
   Widget _buildRow(Announcement anno) {
     return new ListTile(
-        leading:  new Image.network(anno.iconUrl),
+        leading:  new CachedNetworkImage(imageUrl:anno.iconUrl,
+              placeholder: new CircularProgressIndicator(),
+              errorWidget: new Icon(Icons.error),
+        ),
         title: new Text(
           anno.title,
           textAlign: TextAlign.center,

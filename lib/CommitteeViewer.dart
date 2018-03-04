@@ -24,7 +24,7 @@ class CommitteeViewerState extends State<CommitteeViewer> {
       appBar: new AppBar(
         title: new Row(children: <Widget>[
           new Padding(padding: new EdgeInsets.all(10.0), child:
-              new Image.network(committee.iconUrl)),
+          getCachedNetworkImage(committee.iconUrl)),
           new Text(committee.name),
         ]),
       ),

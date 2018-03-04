@@ -56,14 +56,14 @@ PODS:
 
 DEPENDENCIES:
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth-0.4.6/ios`)
-  - Flutter (from `Pods/.symlinks/flutter/ios`)
+  - Flutter (from `Pods/.symlinks/flutter/ios-release`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in-2.1.1/ios`)
 
 EXTERNAL SOURCES:
   firebase_auth:
     :path: Pods/.symlinks/plugins/firebase_auth-0.4.6/ios
   Flutter:
-    :path: Pods/.symlinks/flutter/ios
+    :path: Pods/.symlinks/flutter/ios-release
   google_sign_in:
     :path: Pods/.symlinks/plugins/google_sign_in-2.1.1/ios
 

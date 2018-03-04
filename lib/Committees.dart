@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import "package:http/http.dart" as http;
 import 'package:practice/CommitteeViewer.dart';
 import 'package:practice/SessionData.dart';
-
+import 'Utils.dart';
 class Committes extends StatefulWidget {
   @override
   createState() => new CommittesState();
@@ -62,7 +62,7 @@ class CommittesState extends State<Committes> {
   Widget _buildRow(Committee committee) {
     return new Padding(padding: const EdgeInsets.only(bottom: 20.0),
         child: new ListTile(
-          leading:  new Image.network(committee.iconUrl),
+          leading:  getCachedNetworkImage(committee.iconUrl),
           onTap: ()=>_pushCommittee(committee),
           title: new Text(
             committee.name,
