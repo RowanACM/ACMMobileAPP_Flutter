@@ -24,7 +24,7 @@ class ACMAnnouncementsState extends State<ACMAnnouncements> {
     getAnnouncements();
     var spacer = new SizedBox(height: 32.0);
     var main = new Scaffold (
-      body: _announcements.length > 0 ? _buildSuggestions() :
+      body: _announcements.length > 0 ? _buildAnnouncements() :
     new Center(child:const CupertinoActivityIndicator(),)
       ,
     );
@@ -69,6 +69,7 @@ class ACMAnnouncementsState extends State<ACMAnnouncements> {
         setState(() {
           _announcements = announcements;
         });
+        return result;
       }
     }
   }
@@ -96,20 +97,27 @@ class ACMAnnouncementsState extends State<ACMAnnouncements> {
     );
   }
   
-  Widget _buildSuggestions() {
+  Widget _buildAnnouncements() {
 
 
-    return new ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, i) {
-          if (i.isOdd) return new Divider();
-          final index = i ~/ 2;
-          if (index < _announcements.length) {
-            return _buildRow(_announcements[index]);
-          }
-        }
-    );
+    return new RefreshIndicator(child: new ListView.builder(
+            padding: const EdgeInsets.all(16.0),
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemBuilder: (context, i) {
+              if (i.isOdd) return new Divider();
+              final index = i ~/ 2;
+              if (index < _announcements.length) {
+                return _buildRow(_announcements[index]);
+              }
+            }
+    ), onRefresh: _refreshAnnouncments );
 
+  }
+  Future _refreshAnnouncments()async{
+    _refreshed=false;
+     getAnnouncements().then((announcement){
+       return announcement;
+     });
   }
 
 
