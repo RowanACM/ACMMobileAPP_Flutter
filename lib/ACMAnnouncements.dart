@@ -18,6 +18,7 @@ class ACMAnnouncements extends StatefulWidget {
 
 class ACMAnnouncementsState extends State<ACMAnnouncements> {
   var _announcements = (announcementsCache != null)? announcementsCache : <Announcement>[];
+  static bool _refreshed = false;
   @override
   Widget build(BuildContext context) {
     getAnnouncements();
@@ -30,8 +31,13 @@ class ACMAnnouncementsState extends State<ACMAnnouncements> {
     return main;
 
   }
+  @override
+  void initState() {
+   // utils.LoadCachedData();
+  }
   Future getAnnouncements() async {
-    if(_announcements.length==0) {
+
+    if(_refreshed == false) {
       print('getting');
       var url = 'https://api.rowanacm.org/prod/get-announcements';
       var httpClient = new HttpClient();
@@ -42,19 +48,13 @@ class ACMAnnouncementsState extends State<ACMAnnouncements> {
         var response = await request.close();
         _announcements.clear();
         print('got');
-
+        _refreshed = true;
         if (response.statusCode == HttpStatus.OK) {
           var json = await response.transform(UTF8.decoder).join();
+          SessionUtils.storeAnnouncementsQuery(json);
           var data = JSON.decode(json);
-          for (var announcement in data) {
-            announcements.add(
-                new Announcement(title: announcement['title'].toString(),
-                    iconUrl: announcement['icon'],
-                    text: announcement['snippet'].toString(),
-                    committee: announcement['committee'].toString(),
-                    timestamp: announcement['timestamp']
-                ));
-          }
+          print('use');
+          announcements = Announcement.jsonToAnnouncment(data);
         } else {
           result =
           'Error getting announcements:\nHttp status ${response.statusCode}';
@@ -137,6 +137,21 @@ class Announcement {
   final int timestamp;
 
 
+  static List jsonToAnnouncment(var data){
+    List announcements = <Announcement>[];
+
+    for (var announcement in data) {
+
+      announcements.add(
+          new Announcement(title: announcement['title'].toString(),
+              iconUrl: announcement['icon'],
+              text: announcement['snippet'].toString(),
+              committee: announcement['committee'].toString(),
+              timestamp: announcement['timestamp']
+          ));
+    }
+    return announcements;
+  }
 }
 
 const List<Announcement> choices = const <Announcement>[

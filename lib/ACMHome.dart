@@ -99,17 +99,21 @@ class ACMHomeState extends State<ACMHome> {
      _signIn( await _googleSignIn.signInSilently());
   }
   Future<FirebaseUser> _signIn(GoogleSignInAccount googleUser) async {
-    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    FirebaseUser user = await _auth.signInWithGoogle(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    _handleMeetingSignIn(user);
-    setState((){
-      _currentUser = user;
-    });
+      try {
+        GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        FirebaseUser user = await _auth.signInWithGoogle(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        _handleMeetingSignIn(user);
+        setState(() {
+          _currentUser = user;
+        });
+        return user;
+      }catch( e){
+        return null;
+      }
 
-    return user;
   }
 
   void _handleMeetingSignIn(var user){

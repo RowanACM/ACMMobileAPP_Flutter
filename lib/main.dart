@@ -4,18 +4,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:practice/ACMAnnouncements.dart';
-import 'package:practice/ACMAnnouncementViewer.dart';
 import 'package:practice/ACMHome.dart';
 import 'package:practice/Committees.dart';
 import 'package:practice/GetIp.dart';
 import 'package:practice/Profile.dart';
 import 'package:practice/RandomWords.dart';
+import 'package:practice/SessionData.dart';
 import 'package:practice/Utils.dart';
 
 
 class TabbedAppBarSample extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
+    SessionUtils.LoadCachedData(); // probably getting called too much, should fix
     return new MaterialApp(
       theme: new ThemeData(primaryColor: Colors.green),
       home: new DefaultTabController(
