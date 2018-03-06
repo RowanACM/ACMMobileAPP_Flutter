@@ -5,9 +5,16 @@ PODS:
   - Firebase/Core (4.9.0):
     - FirebaseAnalytics (= 4.0.9)
     - FirebaseCore (= 4.0.15)
+  - Firebase/Messaging (4.9.0):
+    - Firebase/Core
+    - FirebaseMessaging (= 2.1.0)
   - firebase_auth (0.0.1):
     - Firebase/Auth
     - Firebase/Core
+    - Flutter
+  - firebase_messaging (0.0.1):
+    - Firebase/Core
+    - Firebase/Messaging
     - Flutter
   - FirebaseAnalytics (4.0.9):
     - FirebaseCore (~> 4.0)
@@ -22,6 +29,12 @@ PODS:
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseInstanceID (2.0.9):
     - FirebaseCore (~> 4.0)
+  - FirebaseMessaging (2.1.0):
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
   - Flutter (1.0.0)
   - google_sign_in (0.0.1):
     - Flutter
@@ -34,6 +47,8 @@ PODS:
   - GoogleToolboxForMac/DebugUtils (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/Defines (2.1.3)
+  - GoogleToolboxForMac/Logger (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/NSData+zlib (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
@@ -55,11 +70,13 @@ PODS:
   - nanopb/encode (0.3.8)
   - path_provider (0.0.1):
     - Flutter
+  - Protobuf (3.5.0)
   - shared_preferences (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth-0.4.6/ios`)
+  - firebase_messaging (from `Pods/.symlinks/plugins/firebase_messaging-0.1.4/ios`)
   - Flutter (from `Pods/.symlinks/flutter/ios`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in-2.1.1/ios`)
   - path_provider (from `Pods/.symlinks/plugins/path_provider-0.3.1/ios`)
@@ -68,6 +85,8 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   firebase_auth:
     :path: Pods/.symlinks/plugins/firebase_auth-0.4.6/ios
+  firebase_messaging:
+    :path: Pods/.symlinks/plugins/firebase_messaging-0.1.4/ios
   Flutter:
     :path: Pods/.symlinks/flutter/ios
   google_sign_in:
@@ -80,10 +99,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Firebase: 632216af3ed7f31e3be34776947fdc7546cfb572
   firebase_auth: 499d5bfb249606a276f6bddf292a3b2d44139f75
+  firebase_messaging: cd056e1b7baf9adddec56402c3de4158aac3c5fa
   FirebaseAnalytics: 388b630c15713f5dbf364071f5f3d6077fb52f4e
   FirebaseAuth: aaaf68d5064a6c8fec435758f83a43b8db26ccaa
   FirebaseCore: 3bd047463058fa6b5d312c97502c52e45401cdfb
   FirebaseInstanceID: d2058a35e9bebda1b6dd42486b84917bde552a9d
+  FirebaseMessaging: 2bafab2d0f3ab3dfd753101c2c32995c2051b5da
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
   google_sign_in: 64523e9b42c475b01b726ff87e450425ea6d15bc
   GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
@@ -92,6 +113,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 390ea358e5a0d0133153806f744662dad933d06b
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
+  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
 
 PODFILE CHECKSUM: 0420ab312a523ae0eecfb1fc19ea51dd82cc17c7
