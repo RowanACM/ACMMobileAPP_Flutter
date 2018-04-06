@@ -71,7 +71,7 @@ class ProfileState extends State<Profile> {
       )
       ),
       new Padding(padding: new EdgeInsets.all(20.0), child:
-      new Text('Todo list: \n \t ${_profileJson['todo_list']}',
+      new Text( _toDoListToString(_profileJson['todo_list']),
           style: new TextStyle(
             fontFamily: "Rock Salt",
             fontSize: 17.0,
@@ -86,8 +86,12 @@ class ProfileState extends State<Profile> {
 
     ): new Text('please log in to view profile.');
   }
-  _selection(result){
-    print(result);
+  String _toDoListToString(todoList){
+    String list ='Todo list: \n \t';
+    for(var item in todoList){
+      list += item['text'] + ' ' + ((item['completed:'])? '' :'✓') + '\n\t';
+    }
+    return list;
   }
 
   Future<Null> _committee_picker() async {
