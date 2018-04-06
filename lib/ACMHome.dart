@@ -139,7 +139,6 @@ class ACMHomeState extends State<ACMHome> {
     String result;
    get(url).then((var data) {
        result = data['message'];
-
        meetingLoginMessageCache = result;
        if (mounted) {
          setState(() {
