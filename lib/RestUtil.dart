@@ -14,7 +14,7 @@ Future get(url)async {
           var response = await request.close();
           if (response.statusCode == HttpStatus.OK) {
             var json = await response.transform(UTF8.decoder).join();
-            var data = JSON.decode(json);
+            var data = new JsonDecoder().convert(json);
             result = data;
           } else {
             result =
