@@ -11,7 +11,7 @@ import "package:http/http.dart" as http;
 import 'package:practice/SessionData.dart';
 import 'package:practice/Config/values.dart';
 import 'package:practice/Committee.dart';
-
+import 'package:practice/RestUtil.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -121,78 +121,30 @@ class ProfileState extends State<Profile> {
    _getProfileInfo()async {
     if(_profileJson == null) {
       String result;
-
       if (fireUser != null) {
         fireUser.getIdToken(refresh: true).then((String idToken) async {
           String url = 'https://api.rowanacm.org/prod/get-user-info?token=' +
               idToken;
           this.idToken = idToken;
-
-
-          var httpClient = new HttpClient();
-          try {
-            var request = await httpClient.getUrl(Uri.parse(url));
-            var response = await request.close();
-            if (response.statusCode == HttpStatus.OK) {
-              var json = await response.transform(UTF8.decoder).join();
-              var data = JSON.decode(json);
-              result = data;
-              profileInfoCache = result;
-              if (mounted) {
-                setState(() {
-                  _profileJson = result;
-                });
-              }
-            } else {
-              result =
-              'Error Meeting Login:\nHttp status ${response.statusCode}';
+          get(url).then((String data) {
+            result = data;
+            profileInfoCache = result;
+            if (mounted) {
+              setState(() {
+                _profileJson = result;
+              });
             }
-          } catch (exception) {
-            result = 'Failed getting profile';
-          }
-          print(result);
-
-
-          return result;
+            return result;
+          });
         });
       }
     }
    }
-    _changeCommittee(committee){
-      if(_profileJson == null) {
-        String result;
-
-        if (fireUser != null) {
-          fireUser.getIdToken(refresh: true).then((String idToken) async {
-            String url = 'https://api.rowanacm.org/prod/set-committees?token=' +
-                idToken +'&committees=general,' + committee;
-            this.idToken = idToken;
-
-
-            var httpClient = new HttpClient();
-            try {
-              var request = await httpClient.getUrl(Uri.parse(url));
-              var response = await request.close();
-              if (response.statusCode == HttpStatus.OK) {
-                var json = await response.transform(UTF8.decoder).join();
-                var data = JSON.decode(json);
-                result = data;
-                if (mounted) {
-                  //do something
-                }
-              } else {
-                result =
-                'Error Meeting Login:\nHttp status ${response.statusCode}';
-              }
-            } catch (exception) {
-              result = 'Failed getting profile';
-            }
-            print(result);
-
-
-            return result;
-          });
-        }
+    _changeCommittee(committee) {
+      if (_profileJson == null) {
+        String url = 'https://api.rowanacm.org/prod/set-committees?token=' +
+            idToken + '&committees=general,' + committee;
+        get(url);
       }
     }
 }
