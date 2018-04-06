@@ -9,14 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import "package:http/http.dart" as http;
 import 'package:practice/SessionData.dart';
+import 'package:practice/Config/values.dart';
+import 'package:practice/Committee.dart';
+
 
 class Profile extends StatefulWidget {
   @override
   createState() => new ProfileState();
 }
+enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
 
 class ProfileState extends State<Profile> {
-
+  var idToken;
  // GoogleSignInAccount _currentUser;
   var _profileJson = profileInfoCache;
   @override
@@ -74,52 +78,125 @@ class ProfileState extends State<Profile> {
           )
       )
       ),
+      new Padding(padding: new EdgeInsets.all(20.0), child:
+        _build_committee_picker()
+      ),
 
     ],
 
     ): new Text('please log in to view profile.');
   }
+  _selection(result){
+    print(result);
+  }
 
+  Future<Null> _committee_picker() async {
+    _changeCommittee (await showDialog<Department>(
+      context: context,
+      child: new SimpleDialog(
+        title: const Text('Select Committee'),
+        children: _committeChoices()
+        ,
+      ),
+    ));
+  }
+
+  Widget _build_committee_picker(){
+    return new RaisedButton(onPressed: _committee_picker, child: new Text('Committee: ' + ((_profileJson!= null && _profileJson['committee_string'] != null)? _profileJson['committee_string'] : '' )));
+  }
+
+  List<Widget> _committeChoices(){
+    var committeeSelection = new List<Widget>();
+    for(Committee committee in committees){
+      committeeSelection.add(new SimpleDialogOption(
+        onPressed: () {Navigator.pop(context,committee.name); },
+        child: new Text(committee.name),
+      ));
+    }
+    return committeeSelection;
+  }
 
 
   //meeting sign in stuff
    _getProfileInfo()async {
-    if(_profileJson == null){
-     String result;
+    if(_profileJson == null) {
+      String result;
 
-     if (fireUser != null) {
-       fireUser.getIdToken(refresh: true).then((String idToken) async {
-         String url = 'https://api.rowanacm.org/prod/get-user-info?token=' +
-             idToken;
-
-         var httpClient = new HttpClient();
-         try {
-           var request = await httpClient.getUrl(Uri.parse(url));
-           var response = await request.close();
-           if (response.statusCode == HttpStatus.OK) {
-             var json = await response.transform(UTF8.decoder).join();
-             var data = JSON.decode(json);
-             result = data;
-             profileInfoCache = result;
-             if (mounted) {
-               setState(() {
-                 _profileJson = result;
-               });
-             }
-           } else {
-             result =
-             'Error Meeting Login:\nHttp status ${response.statusCode}';
-           }
-         } catch (exception) {
-           result = 'Failed getting profile';
-         }
-         print(result);
+      if (fireUser != null) {
+        fireUser.getIdToken(refresh: true).then((String idToken) async {
+          String url = 'https://api.rowanacm.org/prod/get-user-info?token=' +
+              idToken;
+          this.idToken = idToken;
 
 
-         return result;
-       });
-     }
-     }
+          var httpClient = new HttpClient();
+          try {
+            var request = await httpClient.getUrl(Uri.parse(url));
+            var response = await request.close();
+            if (response.statusCode == HttpStatus.OK) {
+              var json = await response.transform(UTF8.decoder).join();
+              var data = JSON.decode(json);
+              result = data;
+              profileInfoCache = result;
+              if (mounted) {
+                setState(() {
+                  _profileJson = result;
+                });
+              }
+            } else {
+              result =
+              'Error Meeting Login:\nHttp status ${response.statusCode}';
+            }
+          } catch (exception) {
+            result = 'Failed getting profile';
+          }
+          print(result);
+
+
+          return result;
+        });
+      }
+    }
    }
+    _changeCommittee(committee){
+      if(_profileJson == null) {
+        String result;
+
+        if (fireUser != null) {
+          fireUser.getIdToken(refresh: true).then((String idToken) async {
+            String url = 'https://api.rowanacm.org/prod/set-committees?token=' +
+                idToken +'&committees=general,' + committee;
+            this.idToken = idToken;
+
+
+            var httpClient = new HttpClient();
+            try {
+              var request = await httpClient.getUrl(Uri.parse(url));
+              var response = await request.close();
+              if (response.statusCode == HttpStatus.OK) {
+                var json = await response.transform(UTF8.decoder).join();
+                var data = JSON.decode(json);
+                result = data;
+                if (mounted) {
+                  //do something
+                }
+              } else {
+                result =
+                'Error Meeting Login:\nHttp status ${response.statusCode}';
+              }
+            } catch (exception) {
+              result = 'Failed getting profile';
+            }
+            print(result);
+
+
+            return result;
+          });
+        }
+      }
+    }
+}
+
+class Department {
 }
 

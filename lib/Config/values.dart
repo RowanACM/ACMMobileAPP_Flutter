@@ -1,0 +1,12 @@
+
+import'package:practice/Committee.dart';
+
+
+ const List<Committee> committees = const <Committee>[
+   const Committee(name: 'Robotics', description: 'The Robotics committee intends to extend its members\' knowledge and skill by giving them lessons and experience in designing simple circuits, working with common sensors and actuators, and programmatically interacting with physical hardware in a meaningful way.',iconUrl: 'https://firebasestorage.googleapis.com/v0/b/rowan-acm.appspot.com/o/robotics-committee.png?alt=media&token=c3fc8f64-696a-4f83-8c01-f3bdd11bd369'),
+   const Committee(name: 'Animation / Game Design', iconUrl: 'https://firebasestorage.googleapis.com/v0/b/rowan-acm.appspot.com/o/game-committee.png?alt=media&token=21c8d9e6-7c15-48be-a045-82c538fcc0c4', description: 'The Robotics committee intends to extend its members\' knowledge and skill by giving them lessons and experience in designing simple circuits, working with common sensors and actuators, and programmatically interacting with physical hardware in a meaningful way.'),
+   const Committee(name: 'AI', iconUrl: 'https://firebasestorage.googleapis.com/v0/b/rowan-acm.appspot.com/o/ai-committee.png?alt=media&token=543ac18f-134c-4fe2-a057-9501abe48d85', description: 'The Rowan ACM Artificial Intelligence Team is dedicated to promoting the concepts of AI to new students in CS. Because every student may not take the Artificial Intelligence class offered at Rowan, we would like to give students enough of a background so that they can pursue a greater understanding of the field on their own. We teach new students about basic concepts in AI and then attempt to apply them in useful applications ranging from game playing to problem solving.'),
+   const Committee(name: 'Full Stack', iconUrl: 'https://firebasestorage.googleapis.com/v0/b/rowan-acm.appspot.com/o/web-committee.png?alt=media&token=867937e1-5c83-44b7-aac2-15d7fbb418da', description: 'The Fullstack committee is a team of ACM members committed to learning the fundamentals of Full Development through hands-on activities and a collaborative environment. The team consists of individuals possessing a wide range of skills. Though the team is full of potential.'),
+
+
+ ];

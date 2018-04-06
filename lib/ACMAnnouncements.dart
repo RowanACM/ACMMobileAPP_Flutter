@@ -153,7 +153,7 @@ class Announcement {
       announcements.add(
           new Announcement(title: announcement['title'].toString(),
               iconUrl: announcement['icon'],
-              text: announcement['snippet'].toString(),
+              text: announcement['text'].toString(),
               committee: announcement['committee'].toString(),
               timestamp: announcement['timestamp']
           ));

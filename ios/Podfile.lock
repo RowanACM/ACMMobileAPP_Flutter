@@ -77,7 +77,7 @@ PODS:
 DEPENDENCIES:
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth-0.4.6/ios`)
   - firebase_messaging (from `Pods/.symlinks/plugins/firebase_messaging-0.1.4/ios`)
-  - Flutter (from `Pods/.symlinks/flutter/ios`)
+  - Flutter (from `Pods/.symlinks/flutter/ios-release`)
   - google_sign_in (from `Pods/.symlinks/plugins/google_sign_in-2.1.1/ios`)
   - path_provider (from `Pods/.symlinks/plugins/path_provider-0.3.1/ios`)
   - shared_preferences (from `Pods/.symlinks/plugins/shared_preferences-0.3.3/ios`)
@@ -88,7 +88,7 @@ EXTERNAL SOURCES:
   firebase_messaging:
     :path: Pods/.symlinks/plugins/firebase_messaging-0.1.4/ios
   Flutter:
-    :path: Pods/.symlinks/flutter/ios
+    :path: Pods/.symlinks/flutter/ios-release
   google_sign_in:
     :path: Pods/.symlinks/plugins/google_sign_in-2.1.1/ios
   path_provider:

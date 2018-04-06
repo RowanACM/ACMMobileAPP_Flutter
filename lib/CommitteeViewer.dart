@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:practice/ACMAnnouncements.dart';
 import 'package:practice/Committees.dart';
 import 'package:practice/Utils.dart';
-
+import 'package:practice/Committee.dart';
 class CommitteeViewer extends StatefulWidget {
   CommitteeViewer(this.committee);
   final Committee committee;
