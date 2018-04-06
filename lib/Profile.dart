@@ -126,7 +126,7 @@ class ProfileState extends State<Profile> {
           String url = 'https://api.rowanacm.org/prod/get-user-info?token=' +
               idToken;
           this.idToken = idToken;
-          get(url).then((String data) {
+          get(url).then((var data) {
             result = data;
             profileInfoCache = result;
             if (mounted) {

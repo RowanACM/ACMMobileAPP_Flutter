@@ -6,7 +6,7 @@ import 'dart:io';
 
 var base_url = 'https://api.rowanacm.org/prod/';
 
-Future<String> get(url)async {
+Future get(url)async {
         var result;
         var httpClient = new HttpClient();
         try {
