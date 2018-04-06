@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import "package:http/http.dart" as http;
+import 'package:practice/RestUtil.dart';
 import 'package:practice/SessionData.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -132,35 +133,21 @@ class ACMHomeState extends State<ACMHome> {
 
 
   //meeting sign in stuff
-  Future<String> _meetingSignIn(String token)async {
+  _meetingSignIn(String token)async {
 
-    print(token);
    String  url = 'https://api.rowanacm.org/prod/sign-in?token='+token;
     String result;
-    var httpClient = new HttpClient();
-    try {
-      var request = await httpClient.getUrl(Uri.parse(url));
-      var response = await request.close();
-      if (response.statusCode == HttpStatus.OK) {
-        var json = await response.transform(UTF8.decoder).join();
-        var data = JSON.decode(json);
-        result = data['message'];
-      } else {
-        result =
-        'Error Meeting Login:\nHttp status ${response.statusCode}';
-      }
-    } catch (exception) {
-      result = 'Failed profile get';
-    }
-    print(result);
-    meetingLoginMessageCache = result;
-    if(mounted) {
-      setState(() {
-        _loginMessage = result;
-      });
-    }
+   get(url).then((var data) {
+       result = data['message'];
+
+       meetingLoginMessageCache = result;
+       if (mounted) {
+         setState(() {
+           _loginMessage = result;
+         });
+       }
+   });
 
 
-   return result;
   }
 }
